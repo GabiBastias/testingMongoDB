@@ -20,7 +20,6 @@ async function handleAllUserDB(Users){
         if(Array.isArray(allUsers) && allUsers.length) return allUsers
         throw Error('Users is empty')
     } catch (error) {
-        console.log(error);
         return {error:error.message}
     }
 }

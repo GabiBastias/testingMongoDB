@@ -1,21 +1,29 @@
 const app = require('../app');
 const request = require("supertest");
 const agent = request(app);
-require('dotenv').config(); 
+require('dotenv').config();
+const { DB_URI } = process.env;
+const mongoose = require('mongoose')
+
 
 describe("Back-End Routing Test", () => {
+  // The solution was connect the DB before and close the connection after all the test :D
+  beforeAll(async()=>{
+    await mongoose.connect(DB_URI);
+  })
+  afterAll(async()=>{
+    await mongoose.connection.close();
+  })
   describe("GET /users", () =>{
     it("Reply with status: 200.", async () => {
-      const response = await agent.get('/users');
-      expect(response.statusCode).toBe(200);
-      console.log(response);
+      const response = await agent.get('/users').expect(200)
     });
   })
   describe('POST /user', () => {
     it('Post (userCreateController)', async() => {
         const userTest = {
             "name":"pepvbncjxkzito",
-            "lastName":"pbvzcxcbvzx",
+            "lastName":"pbvzfgdhjsaghjkcxcbvzx",
             "adress":"asdasdacxz<sda",
             "city":10,
             "natinality":10,
